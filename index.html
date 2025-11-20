@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Itch.io Sales Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #1a1a1a;
+      color: #00ffcc;
+      font-family: 'Roboto Mono', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      color: #00ffcc;
+      text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+    }
+
+    canvas {
+      max-width: 800px;
+      width: 100%;
+      margin: 30px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Itch.io Revenue Dashboard</h1>
+  <canvas id="revenueChart"></canvas>
+
+  <script>
+    const ctx = document.getElementById('revenueChart').getContext('2d');
+    const revenueChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], // Example months
+        datasets: [{
+          label: 'Revenue ($)',
+          data: [120, 200, 150, 300, 250, 400], // Example revenue
+          borderColor: '#00ffcc',
+          backgroundColor: 'rgba(0, 255, 204, 0.2)',
+          borderWidth: 3,
+          pointBackgroundColor: '#ff4d4d',
+          pointBorderColor: '#ff4d4d',
+          tension: 0.3,
+          fill: true,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: {
+              color: '#00ffcc',
+              font: {
+                family: 'Roboto Mono',
+                size: 14,
+              }
+            }
+          },
+          tooltip: {
+            backgroundColor: '#111',
+            titleColor: '#00ffcc',
+            bodyColor: '#00ffcc',
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: '#00ffcc', font: { family: 'Roboto Mono' } },
+            grid: { color: 'rgba(0, 255, 204, 0.2)' }
+          },
+          y: {
+            ticks: { color: '#00ffcc', font: { family: 'Roboto Mono' } },
+            grid: { color: 'rgba(0, 255, 204, 0.2)' }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
