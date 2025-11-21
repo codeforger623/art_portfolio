@@ -1,84 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Itch.io Revenue Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gamer Portfolio</title>
+
   <style>
     body {
-      background-color: #1a1a1a;
-      color: #00ffcc;
-      font-family: 'Roboto Mono', monospace;
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: #0a0a0f;
+      color: #e0e0ff;
+      scroll-behavior: smooth;
+    }
+    header {
+      height: 100vh;
       display: flex;
       flex-direction: column;
+      justify-content: center;
       align-items: center;
-      padding: 40px;
+      text-align: center;
+      background: radial-gradient(circle at top, #1a1a2e, #000);
     }
-
     h1 {
-      font-family: 'Orbitron', sans-serif;
-      color: #00ffcc;
-      text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+      font-size: 3rem;
+      text-shadow: 0 0 15px #6f00ff;
+    }
+    .btn {
+      padding: 12px 25px;
+      background: #6f00ff;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      display: inline-block;
+      margin-top: 15px;
+      box-shadow: 0 0 15px #6f00ff;
+      transition: 0.2s;
+    }
+    .btn:hover {
+      box-shadow: 0 0 25px #9d4bff;
+      transform: scale(1.05);
     }
 
-    canvas {
-      max-width: 800px;
+    section {
+      padding: 60px 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+      font-size: 2.2rem;
+      text-shadow: 0 0 10px #6f00ff;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: #111122;
+      border-radius: 15px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 0 10px #3f0fa8;
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .project {
+      background: #161623;
+      padding: 20px;
+      border-radius: 12px;
+      transition: 0.2s;
+      box-shadow: 0 0 10px #26007a;
+    }
+    .project:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px #7a2bff;
+    }
+
+    .pricing-boxes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .price-box {
+      background: #161623;
+      padding: 25px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 0 15px #30008a;
+    }
+    .price-box h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    .price-box .btn {
+      margin-top: 10px;
+    }
+
+    form input, form textarea {
       width: 100%;
-      margin: 30px 0;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: none;
+      background: #1c1c2e;
+      color: white;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #6666ff;
     }
   </style>
 </head>
 <body>
-  <h1>Itch.io Revenue Dashboard</h1>
-  <canvas id="revenueChart"></canvas>
+
+  <header>
+    <h1>My Gamer Portfolio</h1>
+    <a href="#about" class="btn">Enter</a>
+  </header>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <div class="card">
+      <p>I'm a game developer and web creator specializing in futuristic and neon-themed designs. I build assets, templates, and interactive projects.</p>
+    </div>
+  </section>
+
+  <section id="portfolio">
+    <h2>Portfolio</h2>
+    <div class="portfolio-grid">
+      <div class="project">Project 1</div>
+      <div class="project">Project 2</div>
+      <div class="project">Project 3</div>
+    </div>
+  </section>
+
+  <section id="purchase">
+    <h2>Purchase</h2>
+    <div class="pricing-boxes">
+      <div class="price-box">
+        <h3>Starter Pack</h3>
+        <p>$5</p>
+        <a href="#" class="btn">Buy</a>
+      </div>
+      <div class="price-box">
+        <h3>Pro Pack</h3>
+        <p>$15</p>
+        <a href="#" class="btn">Buy</a>
+      </div>
+      <div class="price-box">
+        <h3>Ultimate Pack</h3>
+        <p>$25</p>
+        <a href="#" class="btn">Buy</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <form>
+      <input type="text" placeholder="Your Name" required />
+      <input type="email" placeholder="Your Email" required />
+      <textarea placeholder="Your Message" rows="5" required></textarea>
+      <button class="btn" type="submit">Send</button>
+    </form>
+  </section>
+
+  <footer>
+    © 2025 Gamer Portfolio
+  </footer>
 
   <script>
-    // Fetch revenue data from your server-side endpoint
-    fetch('/api/revenue')
-      .then(res => res.json())
-      .then(data => {
-          // Map dates and revenue from Itch.io API
-          const labels = data.sales.map(sale => new Date(sale.purchased_at * 1000).toLocaleDateString());
-          const revenue = data.sales.map(sale => sale.amount);
-
-          const ctx = document.getElementById('revenueChart').getContext('2d');
-          new Chart(ctx, {
-            type: 'line',
-            data: {
-              labels: labels,
-              datasets: [{
-                label: 'Revenue ($)',
-                data: revenue,
-                borderColor: '#00ffcc',
-                backgroundColor: 'rgba(0, 255, 204, 0.2)',
-                borderWidth: 3,
-                pointBackgroundColor: '#ff4d4d',
-                pointBorderColor: '#ff4d4d',
-                tension: 0.3,
-                fill: true,
-              }]
-            },
-            options: {
-              responsive: true,
-              plugins: {
-                legend: {
-                  labels: { color: '#00ffcc', font: { family: 'Roboto Mono', size: 14 } }
-                },
-                tooltip: {
-                  backgroundColor: '#111',
-                  titleColor: '#00ffcc',
-                  bodyColor: '#00ffcc',
-                }
-              },
-              scales: {
-                x: { ticks: { color: '#00ffcc', font: { family: 'Roboto Mono' } }, grid: { color: 'rgba(0, 255, 204, 0.2)' } },
-                y: { ticks: { color: '#00ffcc', font: { family: 'Roboto Mono' } }, grid: { color: 'rgba(0, 255, 204, 0.2)' } }
-              }
-            }
-          });
-      })
-      .catch(err => console.error('Error fetching revenue:', err));
+    // Simple smooth scroll highlight
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
   </script>
 </body>
 </html>
