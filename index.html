@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Itch.io Sales Dashboard</title>
+  <title>Itch.io Revenue Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -34,53 +34,51 @@
   <canvas id="revenueChart"></canvas>
 
   <script>
-    const ctx = document.getElementById('revenueChart').getContext('2d');
-    const revenueChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], // Example months
-        datasets: [{
-          label: 'Revenue ($)',
-          data: [120, 200, 150, 300, 250, 400], // Example revenue
-          borderColor: '#00ffcc',
-          backgroundColor: 'rgba(0, 255, 204, 0.2)',
-          borderWidth: 3,
-          pointBackgroundColor: '#ff4d4d',
-          pointBorderColor: '#ff4d4d',
-          tension: 0.3,
-          fill: true,
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            labels: {
-              color: '#00ffcc',
-              font: {
-                family: 'Roboto Mono',
-                size: 14,
+    // Fetch revenue data from your server-side endpoint
+    fetch('/api/revenue')
+      .then(res => res.json())
+      .then(data => {
+          // Map dates and revenue from Itch.io API
+          const labels = data.sales.map(sale => new Date(sale.purchased_at * 1000).toLocaleDateString());
+          const revenue = data.sales.map(sale => sale.amount);
+
+          const ctx = document.getElementById('revenueChart').getContext('2d');
+          new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Revenue ($)',
+                data: revenue,
+                borderColor: '#00ffcc',
+                backgroundColor: 'rgba(0, 255, 204, 0.2)',
+                borderWidth: 3,
+                pointBackgroundColor: '#ff4d4d',
+                pointBorderColor: '#ff4d4d',
+                tension: 0.3,
+                fill: true,
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  labels: { color: '#00ffcc', font: { family: 'Roboto Mono', size: 14 } }
+                },
+                tooltip: {
+                  backgroundColor: '#111',
+                  titleColor: '#00ffcc',
+                  bodyColor: '#00ffcc',
+                }
+              },
+              scales: {
+                x: { ticks: { color: '#00ffcc', font: { family: 'Roboto Mono' } }, grid: { color: 'rgba(0, 255, 204, 0.2)' } },
+                y: { ticks: { color: '#00ffcc', font: { family: 'Roboto Mono' } }, grid: { color: 'rgba(0, 255, 204, 0.2)' } }
               }
             }
-          },
-          tooltip: {
-            backgroundColor: '#111',
-            titleColor: '#00ffcc',
-            bodyColor: '#00ffcc',
-          }
-        },
-        scales: {
-          x: {
-            ticks: { color: '#00ffcc', font: { family: 'Roboto Mono' } },
-            grid: { color: 'rgba(0, 255, 204, 0.2)' }
-          },
-          y: {
-            ticks: { color: '#00ffcc', font: { family: 'Roboto Mono' } },
-            grid: { color: 'rgba(0, 255, 204, 0.2)' }
-          }
-        }
-      }
-    });
+          });
+      })
+      .catch(err => console.error('Error fetching revenue:', err));
   </script>
 </body>
 </html>
