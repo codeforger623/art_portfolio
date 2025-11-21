@@ -158,43 +158,60 @@
     </div>
   </section>
 
-  <section id="purchase">
-    <h2>Purchase</h2>
-    <div class="pricing-boxes">
-      <div class="price-box">
-        <h3>logo pack</h3>
-        <p>$10</p>
-        <Ul>
-          <li>i dont draw people</li>
-        </Ul>
-        <a href="#" class="btn">Buy now</a>
-      </div>
-      <div class="price-box">
-        <h3>cover pack</h3>
-        <p>$15</p>
-        <Ul>
-          <li>i dont draw people</li>
-        </Ul>
-        <a href="#" class="btn">Buy now</a>
-      </div>
-      <div class="price-box">
-        <h3>full art pack</h3>
-        <p>$20</p>
-        <Ul>
-          <li>i dont draw people</li>
-        </Ul>
-        <a href="#" class="btn">Buy now</a>
-      </div>
-      <div class="price-box">
-        <h3>professional art pack</h3>
-        <p>$35</p>
-        <Ul>
-          <li>i dont draw people</li>
-        </Ul>
-        <a href="#" class="btn">Buy now</a>
-      </div>
+<section id="purchase">
+  <h2>Purchase</h2>
+  <div class="pricing-boxes">
+    <div class="price-box">
+      <h3>Logo Pack</h3>
+      <p>$10</p>
+      <ul>
+        <li>I don't draw people</li>
+      </ul>
+      <a href="#" class="btn" onclick="startOrder('Logo Pack', 10)">Buy now</a>
     </div>
-  </section>
+    <div class="price-box">
+      <h3>Cover Pack</h3>
+      <p>$15</p>
+      <ul>
+        <li>I don't draw people</li>
+      </ul>
+      <a href="#" class="btn" onclick="startOrder('Cover Pack', 15)">Buy now</a>
+    </div>
+    <div class="price-box">
+      <h3>Full Art Pack</h3>
+      <p>$20</p>
+      <ul>
+        <li>I don't draw people</li>
+      </ul>
+      <a href="#" class="btn" onclick="startOrder('Full Art Pack', 20)">Buy now</a>
+    </div>
+    <div class="price-box">
+      <h3>Professional Art Pack</h3>
+      <p>$35</p>
+      <ul>
+        <li>I don't draw people</li>
+      </ul>
+      <a href="#" class="btn" onclick="startOrder('Professional Art Pack', 35)">Buy now</a>
+    </div>
+  </div>
+</section>
+
+<!-- Hidden form section -->
+<section id="artOrderForm" style="display:none;">
+  <h2>Describe Your Custom Art</h2>
+  <form id="orderForm">
+    <label for="name">Your Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="email">Your Email:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="details">Describe Your Art (characters, style, background, etc.):</label>
+    <textarea id="details" name="details" rows="6" required></textarea>
+
+    <button type="submit">Proceed to Payment</button>
+  </form>
+</section>
 
  <section id="contact">
   <h2>Contact</h2>
@@ -220,6 +237,35 @@
         document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
       });
     });
+let selectedPack = '';
+let selectedPrice = 0;
+
+function startOrder(pack, price){
+  selectedPack = pack;
+  selectedPrice = price;
+
+  // Hide purchase section
+  document.getElementById('purchase').style.display = 'none';
+  // Show form section
+  document.getElementById('artOrderForm').style.display = 'block';
+}
+
+// Handle form submission
+document.getElementById('orderForm').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  // Collect form data
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const details = document.getElementById('details').value;
+
+  // Save order info to localStorage (or you could send to a backend)
+  localStorage.setItem('artOrder', JSON.stringify({pack: selectedPack, price: selectedPrice, name, email, details}));
+
+  // Redirect to PayPal
+  // Replace YOUR_BUTTON_ID with your actual PayPal button ID
+  window.location.href = 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YOUR_BUTTON_ID';
+});
   </script>
 </body>
 </html>
