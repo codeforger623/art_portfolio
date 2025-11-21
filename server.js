@@ -8,15 +8,19 @@ const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Your Itch.io API key (keep secret!)
-const ITCH_API_KEY = 'YOUR_API_KEY_HERE'; 
-const GAME_ID = 'YOUR_GAME_ID_HERE';
+const ITCH_API_KEY = 'https://itch.io/api/1/mztq4WNDPZxG9c5WAt5EK9o3sZ6nd2Lg6PrkdBC9';/my-sales
+';
 
-// Endpoint to fetch revenue data
+// Endpoint to fetch all revenue data for all projects
 app.get('/api/revenue', async (req, res) => {
     try {
-        const response = await fetch(`https://itch.io/api/1/${ITCH_API_KEY}/game/${GAME_ID}/sales`);
+        // Fetch all sales from your account
+        const response = await fetch(`https://itch.io/api/1/${ITCH_API_KEY}/my-sales`);
         const data = await response.json();
-        res.json(data); // send JSON to frontend
+
+        // Optional: aggregate revenue by date or just send all sales
+        // For now, sending raw sales array to frontend
+        res.json(data);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Failed to fetch revenue data' });
